@@ -27,14 +27,14 @@ ns = {'g': 'http://base.google.com/ns/1.0'}
 # Extract items
 items = root.findall('.//item')
 
-# 🛍️ Display products
+# 🛍️ Display products in 3 columns
 cols = st.columns(3)
 for i, item in enumerate(items):
     title = item.find('title').text if item.find('title') is not None else "No Title"
-    link = item.find('link').text if item.find('link') is not None else "#"
     description = item.find('description').text if item.find('description') is not None else ""
     price = item.find('g:price', ns).text if item.find('g:price', ns) is not None else "N/A"
     image_link = item.find('g:image_link', ns).text if item.find('g:image_link', ns) is not None else ""
+    product_link = item.find('g:link', ns).text if item.find('g:link', ns) is not None else "#"  # ✅ Corrected line
 
     with cols[i % 3]:
         if image_link:
@@ -43,7 +43,7 @@ for i, item in enumerate(items):
         st.markdown(f"💰 **Price:** {price}")
         st.markdown(description, unsafe_allow_html=True)
         st.markdown(
-            f"<a href='{link}' target='_blank'>"
+            f"<a href='{product_link}' target='_blank'>"
             f"<button style='background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;'>"
             f"View on StyleThreadz</button></a>",
             unsafe_allow_html=True
